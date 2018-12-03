@@ -26,16 +26,20 @@ I wanted to run sysprep on a Azure VM to create an image, hopefully without need
 
 
 This gave the output:
+
         RequestId IsSuccessStatusCode StatusCode ReasonPhrase
         --------- ------------------- ---------- ------------
                                 True         OK OK
 
 To see the output messages from the script that was run:
+
         $status = Get-AzureRmVMDiagnosticsExtension -ResourceGroupName $VMRG -VMName $VMName -Name $ExtensionName -Status
         $status.SubStatuses.message
 
 This displayed the output that was expected:
+
         Sysprep Script Run, parameter 'runSysprep': True\nstarting Sysprep\nstarted Sysprep
 
 A short time later, the VM is shutdown (but is still allocated & incurring charges), so i then shutdown the VM:
+
         Stop-AzureRmVM -Name $VMName -ResourceGroupName $VMRG  -force
