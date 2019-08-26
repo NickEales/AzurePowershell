@@ -33,9 +33,8 @@ function call-AzureRestAPI
 $Headers = @{}
 $Headers.Add("Authorization","$($AuthorizationToken.token_type) "+ " " + "$($AuthorizationToken.access_token)")
 
-write-host "Query Cost API:"
+write-host "Query Cost API"
 $BodyObject=@{
-    
     type='Usage'
     timeframe='TheLastMonth'
     dataset=@{
@@ -46,27 +45,32 @@ $BodyObject=@{
                 function='Sum'
             }
         }
+        grouping= @(
+            @{
+                type = "TagKey"
+                name = "Application"
+            }
+        )
     }
 }       
 $Requestbody = $BodyObject | convertto-json -Depth 10
+write-Verbose "RequestBody = `n$Requestbody"
 
-<#
+
 write-host -ForegroundColor Cyan 'Testing API ManagementGroups cost management'
 $ManagementGroupId='RestTest'
 $scope = "/providers/Microsoft.Management/managementGroups/$($ManagementGroupId)"
 $ApiParameters = "api-version=2019-01-01"
 $result = (call-AzureRestAPI -Header $header -APIPath "$($scope)/providers/Microsoft.CostManagement/query" -APIParameters $ApiParameters -method 'POST' -requestBody $Requestbody  -Verbose)
 $result | ConvertTo-Json -Depth 5 | write-host
-#>
 
-<#
+
 write-host -ForegroundColor Cyan 'Testing API for Resource Groups cost management'
 $scope = "/subscriptions/92feddf2-3895-421d-a564-98a43783608e/resourceGroups/testRsvApi"
 $ApiParameters = "api-version=2019-01-01"
 $result = (call-AzureRestAPI -Header $header -APIPath "$($scope)/providers/Microsoft.CostManagement/query" -APIParameters $ApiParameters -method 'POST' -requestBody $Requestbody  -Verbose)
 
 $result | ConvertTo-Json -Depth 5 | write-host
-#>
 
 Write-verbose -verbose 'Get list of management groups'
 $ManagementGroupId='RestTest'
@@ -93,34 +97,5 @@ Foreach($ManagementGroupID in $ManagementGroupIDs){
         $result = (call-AzureRestAPI -Header $header -APIPath $APIPath -APIParameters $ApiParameters -method 'POST' -requestBody $Requestbody  -Verbose)
         $result | ConvertTo-Json -Depth 5 | write-host
     }
-    
 }
-<#
-Write-verbose -verbose "Get subscriptions in management group "
-$Part1 = $result.value[0].id 
-$part2 = '/descendants'
-$APIPath = "$Part1$Part2"
-$ApiParameters = "api-version=2018-03-01-preview"
-$result = (call-AzureRestAPI -Header $header -APIPath $APIPath -APIParameters $ApiParameters -method 'GET'  -Verbose)
 
-$result | ConvertTo-Json -Depth 5 | write-host
-
-$SubUrlIDs = $result.value | %{$_.id}
-
-foreach($scope in $SubUrlIDs){
-    $ApiParameters = "api-version=2019-01-01"
-    $result = (call-AzureRestAPI -Header $header -APIPath "$($scope)/providers/Microsoft.CostManagement/query" -APIParameters $ApiParameters -method 'POST' -requestBody $Requestbody  -Verbose)
-    
-    $result | ConvertTo-Json -Depth 5 | write-host
-}
-#>
-<#
-$ManagementGroupId='RestTest'
-$scope = "providers/Microsoft.Management/managementGroups/$($ManagementGroupId)"
-#$scope = "subscriptions/92feddf2-3895-421d-a564-98a43783608e/resourceGroups/testRsvApi"
-$ApiParameters = "api-version=2019-01-01"
-$result = (call-AzureRestAPI -Header $header -APIPath "$($scope)/providers/Microsoft.CostManagement/query" -APIParameters $ApiParameters -method 'POST' -requestBody $Requestbody  -Verbose)
-
-$result | ConvertTo-Json -Depth 5 | write-host
-
-#>

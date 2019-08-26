@@ -6,10 +6,7 @@ param(
     [object]$ScriptParam=@{}
 )
 
-
 write-verbose $RequestAccessTokenUri -verbose #remove the -Verbose for this to stop showing the yellow Verbose output
-
-
 
 #Get Authorization token
 $RequestAccessTokenUri = "https://login.microsoftonline.com/$TenantId/oauth2/token"
