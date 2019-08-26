@@ -1,3 +1,5 @@
+#From Luke, Not Customized
+
 Login-AzureRmAccount
 
 $Subscription = (Get-AzureRmSubscription | Out-GridView -Title "Choose a Source & Target Subscription ..." -PassThru)
