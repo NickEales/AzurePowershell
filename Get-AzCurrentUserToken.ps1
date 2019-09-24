@@ -4,10 +4,10 @@ Param(
     [string]$endpoint = 'https://login.microsoftonline.com/'
 )
 
-$Context = Get-AzContext
+    $Context = Get-AzContext
     if(!$Context){throw "Not logged into Azure"}
 
-    if(!$tenantid){$TEnantID=$Context.Tenant.Id}
+    if(!$tenantid){$TenantID=$Context.Tenant.Id}
 
     $cachedTokens = $Context.tokenCache.ReadItems() `
             | where { $_.TenantId -eq $tenantId } `
