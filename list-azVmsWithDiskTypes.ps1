@@ -12,6 +12,8 @@ even if Microsoft has been advised of the possibility of such damages.
 
 #Find all VMs across all subscriptions (that I have access to), and report on whether or not they use managed disks:
 
+#assumes you are already logged into Azure in powershell, and are using the 'Az" modules.
+
 foreach($SubID in (Get-AzSubscription).SubscriptionId){
     set-azcontext -subscriptionid $SubID
     $output = Foreach($VM in Get-AzVM){
