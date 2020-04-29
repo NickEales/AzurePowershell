@@ -187,7 +187,7 @@
                        "typeHandlerVersion": "2.1",
                        "autoUpgradeMinorVersion": true,
                        "settings": {
-                           "fileUris": ["https://raw.githubusercontent.com/NickEales/AzurePowershell/master/dnsForwarder/automate_bind.sh"
+                           "fileUris": ["https://raw.githubusercontent.com/NickEales/AzurePowershell/master/dnsForwarder/automatebind.sh"
                            ]  
                        },
                       "protectedSettings" :{
